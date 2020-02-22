@@ -24,13 +24,14 @@ f = open("a.hevc", "wb")
 print('Connection address:', addr)
 
 size = conn.recv(4)
-print(int(size))
+size = int.from_bytes(size)
+print(size)
 l = 0
 while l < size:
     data = conn.recv(BUFFER_SIZE)
     if data:
         f.write(data)
     l += len(data)
-    
+
 f.close()
 conn.close()
