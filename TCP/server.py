@@ -11,7 +11,7 @@
 import socket
 
 
-TCP_IP = '127.0.0.1'
+TCP_IP = '0.0.0.0'
 TCP_PORT = 10051
 BUFFER_SIZE = 20  # Normally 1024, but we want fast response
 
@@ -20,10 +20,17 @@ s.bind((TCP_IP, TCP_PORT))
 s.listen(1)
 
 conn, addr = s.accept()
+f = open("a.hevc", "wb")
 print('Connection address:', addr)
-while 1:
+
+size = conn.recv(4)
+print(int(size))
+l = 0
+while l < size:
     data = conn.recv(BUFFER_SIZE)
-    if not data: break
-    print("received data:", data)
-    conn.send(data)  # echo
+    if data:
+        f.write(data)
+    l += len(data)
+    
+f.close()
 conn.close()
